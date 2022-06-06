@@ -30,7 +30,14 @@ template ProcessTx(k){
 
     // [assignment] verify sender account exists in accounts_root
     component senderExistence = GetMerkleRoot(k, 3);
-
+    senderExistance.leaf[0] <== sender_pubkey[0];
+    senderExistance.leaf[1] <== sender_pubkey[1];
+    senderExistance.leaf[2] <== sender_balance;
+    for(var i=0; i<levels; i++) {
+        senderExistance.pathElements[i] = sender_proof[i];
+        senderExistance.pathIndices[i] = sender_proof_pos[i];
+    }
+    
     // [assignment] check that transaction was signed by sender
     component signatureCheck = VerifyEdDSAPoseidon(5);
 
